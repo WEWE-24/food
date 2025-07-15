@@ -1,0 +1,108 @@
+-- Services
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+
+-- Créer la GUI dans CoreGui
+local gui = Instance.new("ScreenGui")
+gui.Name = "TeleportUI"
+gui.Parent = game.CoreGui
+gui.ResetOnSpawn = false
+
+-- Frame principal
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 280, 0, 160)
+frame.Position = UDim2.new(0.05, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+frame.Parent = gui
+
+local uICorner = Instance.new("UICorner")
+uICorner.CornerRadius = UDim.new(0, 10)
+uICorner.Parent = frame
+
+-- Titre
+local title = Instance.new("TextLabel")
+title.Text = "discord.gg/807shop"
+title.Size = UDim2.new(0.6, 0, 0, 40)
+title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+title.BackgroundTransparency = 1 -- Fond transparent pour le texte
+title.TextColor3 = Color3.new(1, 1, 1)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = false
+title.TextSize = 15
+title.Parent = frame
+
+-- Bouton Minimiser
+local btnMinimize = Instance.new("TextButton")
+btnMinimize.Text = "−"
+btnMinimize.Size = UDim2.new(0, 30, 0, 30)
+btnMinimize.Position = UDim2.new(1, -70, 0, 5)
+btnMinimize.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+btnMinimize.TextColor3 = Color3.new(1, 1, 1)
+btnMinimize.Font = Enum.Font.GothamBold
+btnMinimize.TextScaled = true
+btnMinimize.Parent = frame
+btnMinimize.AutoButtonColor = false
+
+-- Bouton Unload
+local btnUnload = Instance.new("TextButton")
+btnUnload.Text = "×"
+btnUnload.Size = UDim2.new(0, 30, 0, 30)
+btnUnload.Position = UDim2.new(1, -35, 0, 5)
+btnUnload.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+btnUnload.TextColor3 = Color3.new(1, 1, 1)
+btnUnload.Font = Enum.Font.GothamBold
+btnUnload.TextScaled = true
+btnUnload.Parent = frame
+btnUnload.AutoButtonColor = false
+
+-- Bouton Téléporter
+local btnTeleport = Instance.new("TextButton")
+btnTeleport.Text = "Téléporter à la position"
+btnTeleport.Size = UDim2.new(0.8, 0, 0, 50)
+btnTeleport.Position = UDim2.new(0.1, 0, 0, 60)
+btnTeleport.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+btnTeleport.TextColor3 = Color3.new(1, 1, 1)
+btnTeleport.Font = Enum.Font.GothamBold
+btnTeleport.TextScaled = true
+btnTeleport.Parent = frame
+btnTeleport.AutoButtonColor = false
+
+-- Variables
+local minimized = false
+
+-- Fonction téléportation
+local function teleport()
+	local char = player.Character
+	if not char then return end
+	local hrp = char:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
+
+	local targetPos = Vector3.new(1262.5, 1025.1 + 10, 300.7)
+	hrp.CFrame = CFrame.new(targetPos)
+end
+
+btnTeleport.MouseButton1Click:Connect(teleport)
+
+-- Fonction Minimiser / Agrandir
+btnMinimize.MouseButton1Click:Connect(function()
+	minimized = not minimized
+	if minimized then
+		btnTeleport.Visible = false
+		frame.Size = UDim2.new(0, 280, 0, 40)
+		btnMinimize.Text = "+"
+	else
+		btnTeleport.Visible = true
+		frame.Size = UDim2.new(0, 280, 0, 160)
+		btnMinimize.Text = "−"
+	end
+end)
+
+-- Fonction Unload
+btnUnload.MouseButton1Click:Connect(function()
+	gui:Destroy()
+end)
